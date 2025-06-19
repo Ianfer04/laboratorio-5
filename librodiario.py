@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, Dict
 import logging
 
-# Configuración del logging
+# Configurar logging
 logging.basicConfig(
     filename='log_contable.log',
     level=logging.INFO,
@@ -21,7 +21,6 @@ class LibroDiario:
 
     def agregar_transaccion(self, fecha: str, descripcion: str, monto: float, tipo: str) -> None:
         """Agrega una transacción al libro diario con validación y logging."""
-
         try:
             if tipo not in ("ingreso", "egreso"):
                 raise ValueError("Tipo de transacción inválido. Use 'ingreso' o 'egreso'.")
@@ -57,3 +56,30 @@ class LibroDiario:
             else:
                 resumen["egresos"] += transaccion["monto"]
         return resumen
+
+    def cargar_transacciones_desde_archivo(self, path: str) -> None:
+        """Carga transacciones desde un archivo CSV con validaciones."""
+        try:
+            with open(path, 'r', encoding='utf-8') as archivo:
+                for linea in archivo:
+                    try:
+                        partes = linea.strip().split(';')
+                        if len(partes) != 4:
+                            raise ValueError("La línea no tiene 4 campos esperados.")
+
+                        fecha_iso, descripcion, monto_str, tipo = partes
+                        fecha_formateada = datetime.strptime(fecha_iso, "%Y-%m-%d").strftime("%d/%m/%Y")
+                        monto = float(monto_str)
+
+                        self.agregar_transaccion(fecha_formateada, descripcion, monto, tipo.strip().lower())
+
+                    except Exception as e:
+                        logging.error(f"Error al procesar línea: {linea.strip()} - {e}", exc_info=True)
+
+        except FileNotFoundError:
+            logging.error(f"Archivo no encontrado: {path}", exc_info=True)
+        except Exception as e:
+            logging.error(f"Error al leer el archivo: {e}", exc_info=True)
+
+    
+    
