@@ -5,3 +5,41 @@ Traceback (most recent call last):
   File "c:\Users\br31_\laboratorio-5\librodiario.py", line 30, in agregar_transaccion
     raise MontoInvalidoError("El monto debe ser mayor que cero.")
 librodiario.MontoInvalidoError: El monto debe ser mayor que cero.
+2025-06-19 11:49:01,434 - INFO - Transacción registrada exitosamente: {'fecha': datetime.datetime(2025, 6, 18, 0, 0), 'descripcion': 'Compra de laptop', 'monto': 780, 'tipo': 'egreso'}
+2025-06-19 11:49:01,435 - INFO - Transacción registrada exitosamente: {'fecha': datetime.datetime(2025, 6, 18, 0, 0), 'descripcion': 'Venta de sensor TK-110', 'monto': 780, 'tipo': 'ingreso'}
+2025-06-19 11:49:01,435 - ERROR - Monto inválido: El monto debe ser mayor que cero.
+Traceback (most recent call last):
+  File "c:\Users\br31_\laboratorio-5\librodiario.py", line 29, in agregar_transaccion
+    raise MontoInvalidoError("El monto debe ser mayor que cero.")
+librodiario.MontoInvalidoError: El monto debe ser mayor que cero.
+2025-06-19 11:54:22,755 - INFO - Transacción registrada exitosamente: {'fecha': datetime.datetime(2025, 6, 18, 0, 0), 'descripcion': 'Compra de laptop', 'monto': 780, 'tipo': 'egreso'}
+2025-06-19 11:54:22,755 - INFO - Transacción registrada exitosamente: {'fecha': datetime.datetime(2025, 6, 18, 0, 0), 'descripcion': 'Venta de sensor TK-110', 'monto': 780, 'tipo': 'ingreso'}
+2025-06-19 11:54:22,755 - ERROR - Monto inválido: El monto debe ser mayor que cero.
+Traceback (most recent call last):
+  File "c:\Users\br31_\laboratorio-5\librodiario.py", line 29, in agregar_transaccion
+    raise MontoInvalidoError("El monto debe ser mayor que cero.")
+librodiario.MontoInvalidoError: El monto debe ser mayor que cero.
+2025-06-19 12:00:22,260 - INFO - Transacción registrada exitosamente: {'fecha': datetime.datetime(2025, 6, 18, 0, 0), 'descripcion': 'Compra de laptop', 'monto': 780, 'tipo': 'egreso'}
+2025-06-19 12:00:22,261 - INFO - Transacción registrada exitosamente: {'fecha': datetime.datetime(2025, 6, 18, 0, 0), 'descripcion': 'Venta de sensor TK-110', 'monto': 780, 'tipo': 'ingreso'}
+2025-06-19 12:00:22,261 - ERROR - Monto inválido: El monto debe ser mayor que cero.
+Traceback (most recent call last):
+  File "c:\Users\br31_\laboratorio-5\librodiario.py", line 29, in agregar_transaccion
+    raise MontoInvalidoError("El monto debe ser mayor que cero.")
+librodiario.MontoInvalidoError: El monto debe ser mayor que cero.
+2025-06-19 12:03:31,117 - INFO - Transacción registrada exitosamente: {'fecha': datetime.datetime(2025, 6, 18, 0, 0), 'descripcion': 'Compra de laptop', 'monto': 780, 'tipo': 'egreso'}
+2025-06-19 12:03:31,117 - INFO - Transacción registrada exitosamente: {'fecha': datetime.datetime(2025, 6, 18, 0, 0), 'descripcion': 'Venta de sensor TK-110', 'monto': 780, 'tipo': 'ingreso'}
+2025-06-19 12:03:31,117 - ERROR - Monto inválido: El monto debe ser mayor que cero.
+Traceback (most recent call last):
+  File "c:\Users\br31_\laboratorio-5\librodiario.py", line 29, in agregar_transaccion
+    raise MontoInvalidoError("El monto debe ser mayor que cero.")
+librodiario.MontoInvalidoError: El monto debe ser mayor que cero.
+2025-06-19 12:05:40,053 - ERROR - Archivo no encontrado: transacciones.csv
+2025-06-19 12:05:40,054 - INFO - Resumen exportado correctamente.
+2025-06-19 12:06:42,123 - ERROR - Archivo no encontrado: transacciones.csv
+2025-06-19 12:06:42,124 - INFO - Resumen exportado correctamente.
+2025-06-19 12:07:36,564 - INFO - Transacción registrada: Venta producto X - 850.0 (ingreso)
+2025-06-19 12:07:36,564 - ERROR - Monto inválido: El monto debe ser mayor a cero.
+2025-06-19 12:07:36,564 - INFO - Transacción registrada: Venta accesorio Y - 1000.0 (ingreso)
+2025-06-19 12:07:36,565 - INFO - Transacción registrada: Gasto operativo - 100.0 (egreso)
+2025-06-19 12:07:36,565 - ERROR - Monto inválido: El monto debe ser mayor a cero.
+2025-06-19 12:07:36,566 - INFO - Resumen exportado correctamente.

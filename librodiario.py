@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import List, Dict
 import logging
 
-# Configurar logging
 logging.basicConfig(
     filename='log_contable.log',
     level=logging.INFO,
@@ -10,45 +9,41 @@ logging.basicConfig(
 )
 
 class MontoInvalidoError(Exception):
-    """Excepción personalizada para montos inválidos."""
     pass
 
 class LibroDiario:
-    """Gestión contable básica de ingresos y egresos."""
+    """Gestión contable básica de ingresos y egresos con manejo de errores."""
 
     def __init__(self):
         self.transacciones: List[Dict] = []
 
     def agregar_transaccion(self, fecha: str, descripcion: str, monto: float, tipo: str) -> None:
-        """Agrega una transacción al libro diario con validación y logging."""
         try:
-            if tipo not in ("ingreso", "egreso"):
+            if tipo.lower() not in ("ingreso", "egreso"):
                 raise ValueError("Tipo de transacción inválido. Use 'ingreso' o 'egreso'.")
 
             if monto <= 0:
-                raise MontoInvalidoError("El monto debe ser mayor que cero.")
+                raise MontoInvalidoError("El monto debe ser mayor a cero.")
 
-            fecha_dt = datetime.strptime(fecha, "%d/%m/%Y")
+            fecha_obj = datetime.strptime(fecha, "%d/%m/%Y")
 
             transaccion = {
-                "fecha": fecha_dt,
+                "fecha": fecha_obj,
                 "descripcion": descripcion,
                 "monto": monto,
-                "tipo": tipo
+                "tipo": tipo.lower()
             }
-
             self.transacciones.append(transaccion)
-            logging.info(f"Transacción registrada exitosamente: {transaccion}")
+            logging.info(f"Transacción registrada: {descripcion} - {monto} ({tipo})")
 
         except ValueError as ve:
-            logging.error(f"Error de valor: {ve}", exc_info=True)
+            logging.error(f"Error de valor: {ve}")
         except MontoInvalidoError as me:
-            logging.error(f"Monto inválido: {me}", exc_info=True)
+            logging.error(f"Monto inválido: {me}")
         except Exception as e:
-            logging.error(f"Error inesperado al agregar transacción: {e}", exc_info=True)
+            logging.error(f"Error inesperado: {e}")
 
     def calcular_resumen(self) -> Dict[str, float]:
-        """Devuelve el resumen total de ingresos y egresos."""
         resumen = {"ingresos": 0.0, "egresos": 0.0}
         for transaccion in self.transacciones:
             if transaccion["tipo"] == "ingreso":
@@ -58,28 +53,29 @@ class LibroDiario:
         return resumen
 
     def cargar_transacciones_desde_archivo(self, path: str) -> None:
-        """Carga transacciones desde un archivo CSV con validaciones."""
         try:
             with open(path, 'r', encoding='utf-8') as archivo:
                 for linea in archivo:
                     try:
-                        partes = linea.strip().split(';')
-                        if len(partes) != 4:
-                            raise ValueError("La línea no tiene 4 campos esperados.")
-
-                        fecha_iso, descripcion, monto_str, tipo = partes
-                        fecha_formateada = datetime.strptime(fecha_iso, "%Y-%m-%d").strftime("%d/%m/%Y")
-                        monto = float(monto_str)
-
-                        self.agregar_transaccion(fecha_formateada, descripcion, monto, tipo.strip().lower())
-
+                        fecha, descripcion, monto, tipo = linea.strip().split(';')
+                        self.agregar_transaccion(
+                            datetime.strptime(fecha, "%Y-%m-%d").strftime("%d/%m/%Y"),
+                            descripcion,
+                            float(monto),
+                            tipo
+                        )
                     except Exception as e:
-                        logging.error(f"Error al procesar línea: {linea.strip()} - {e}", exc_info=True)
-
+                        logging.error(f"Error al procesar línea: {linea.strip()} | {e}")
         except FileNotFoundError:
-            logging.error(f"Archivo no encontrado: {path}", exc_info=True)
-        except Exception as e:
-            logging.error(f"Error al leer el archivo: {e}", exc_info=True)
+            logging.error(f"Archivo no encontrado: {path}")
 
-    
-    
+    def exportar_resumen(self, path: str) -> None:
+        try:
+            resumen = self.calcular_resumen()
+            with open(path, 'w', encoding='utf-8') as archivo:
+                archivo.write("Resumen contable:\n")
+                archivo.write(f"Ingresos: {resumen['ingresos']:.2f}\n")
+                archivo.write(f"Egresos: {resumen['egresos']:.2f}\n")
+            logging.info("Resumen exportado correctamente.")
+        except Exception as e:
+            logging.error(f"Error al exportar resumen: {e}")

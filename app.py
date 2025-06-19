@@ -1,10 +1,32 @@
 from librodiario import LibroDiario
 
-libro = LibroDiario()
+def main():
+    libro = LibroDiario()
 
-# Transacciones corregidas
-libro.agregar_transaccion('18/06/2025', 'Compra de laptop', 780, 'egreso')
-libro.agregar_transaccion('18/06/2025', 'Venta de sensor TK-110', 780, 'ingreso')  
-libro.agregar_transaccion('18/06/2025', 'Compra de insumos de oficina', -85.60, 'egreso')  
+    print("Cargando transacciones desde archivo CSV...\n")
+    libro.cargar_transacciones_desde_archivo("trans.csv")
 
-print(libro.calcular_resumen())
+    print("Transacciones registradas:\n")
+    for t in libro.transacciones:
+        fecha_str = t["fecha"].strftime("%d/%m/%Y")
+        print(f"- {fecha_str} | {t['descripcion']} | ${t['monto']:.2f} | {t['tipo']}")
+
+    print("\nResumen contable:\n")
+    resumen = libro.calcular_resumen()
+    print(f"Total ingresos: ${resumen['ingresos']:.2f}")
+    print(f"Total egresos: ${resumen['egresos']:.2f}\n")
+
+    print("Exportando resumen a archivo 'resumen.txt'...\n")
+    libro.exportar_resumen("resumen.txt")
+
+    print("Proceso completado. Revisa 'log_contable.log' y 'resumen.txt' para más detalles.\n")
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        from datetime import datetime
+        import logging
+        logging.basicConfig(filename='log_contable.log', level=logging.ERROR)
+        logging.error(f"Error no controlado en la app: {e}")
+        print("Ocurrió un error inesperado. Revisa 'log_contable.log' para más detalles.")
