@@ -1,5 +1,13 @@
 from datetime import datetime
 from typing import List, Dict
+import logging
+
+# Configuración del logging
+logging.basicConfig(
+    filename='log_contable.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 class MontoInvalidoError(Exception):
     """Excepción personalizada para montos inválidos."""
@@ -12,7 +20,7 @@ class LibroDiario:
         self.transacciones: List[Dict] = []
 
     def agregar_transaccion(self, fecha: str, descripcion: str, monto: float, tipo: str) -> None:
-        """Agrega una transacción al libro diario con validaciones."""
+        """Agrega una transacción al libro diario con validación y logging."""
 
         try:
             if tipo not in ("ingreso", "egreso"):
@@ -31,9 +39,14 @@ class LibroDiario:
             }
 
             self.transacciones.append(transaccion)
+            logging.info(f"Transacción registrada exitosamente: {transaccion}")
 
+        except ValueError as ve:
+            logging.error(f"Error de valor: {ve}", exc_info=True)
+        except MontoInvalidoError as me:
+            logging.error(f"Monto inválido: {me}", exc_info=True)
         except Exception as e:
-            print(f"Error al agregar transacción: {e}")
+            logging.error(f"Error inesperado al agregar transacción: {e}", exc_info=True)
 
     def calcular_resumen(self) -> Dict[str, float]:
         """Devuelve el resumen total de ingresos y egresos."""
