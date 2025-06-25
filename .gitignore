@@ -1,0 +1,29 @@
+# Entorno virtual
+venv/
+ENV/
+env/
+.venv/
+
+# Archivos de log
+#*.log
+
+# Archivos de Python compilados
+_pycache_/
+*.py[cod]
+*$py.class
+
+# Archivos de VSCode
+.vscode/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de exportación
+*.csv
+*.xlsx
+*.json
+
+# Carpetas de pruebas o temporales
+*.bak
+*.tmp
